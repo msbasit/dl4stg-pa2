@@ -1,0 +1,12 @@
+--extra-index-url https://download.pytorch.org/whl/xpu
+torch==2.14.1+xpu
+torchvision==0.29.1+xpu
+numpy
+matplotlib
+opencv-python-headless==5.0.0.93
+pandas
+pillow
+nbformat
+nbclient
+ipykernel
+pypandoc_binary

@@ -1,0 +1,9 @@
+# Generative-AI disclosure
+
+**Prompt:** “Complete this assignment end to end. Artifacts for Q1 are given in the folder which where assignment .pdf lies. Necessary python pytorch libraries are already available. As per assignment Q1 artifacts are not for training but for modelling. Q2 requires training and modelling. Use Latex style equations where required. Create a separate notebook for Q2. . For training and inference use Intel ARC 140T GPU/NPU available on this machine. Do not add unnecessary computations and sections to the notebook only add things required in the scope of questions.”
+
+**Output:** Codex generated the Q1 proposal and architecture diagram; Q2 data, transformations, ConvLSTM implementations, training/evaluation and visualization code; the notebooks; result interpretation; and the combined report. Reported measurements are computed from the supplied protocol and saved local runs, not fabricated examples. Q1 is a proposed design without a claimed training experiment. Learned Q2 models run on the Intel Arc 140T GPU through PyTorch XPU; preprocessing and the mandated Farneback analysis run on CPU.
+
+**Edits and decisions:** The human instructed “Keep everything local” in response to a question about the required public GitHub repository; no repository was published. Codex revised model D from a preliminary dilation-2/dilation-2 idea to dilation-1/dilation-3 before D training to cover intermediate offsets. An initial partial float32 A run was excluded and replaced by a fresh, consistently configured mixed-precision run. No human-authored corrections to the generated technical answers have been supplied in this chat. The pre-experiment Q2.5 and Q2.11 answers are preserved in their committed files.
+
+This disclosure records the assistance actually used; it does not claim independent human authorship. The student should review the equations, code and interpretations and make any required course-policy declaration before submission.

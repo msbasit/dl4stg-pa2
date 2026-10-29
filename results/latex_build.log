@@ -1,0 +1,147 @@
+This is XeTeX, Version 3.141592653-2.6-0.999997 (MiKTeX 25.12) (preloaded format=xelatex.fmt)
+ restricted \write18 enabled.
+entering extended mode
+(Assignment2_Report.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2025-12-24>
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
+Document Class: article 2025/01/22 v1.4n Standard LaTeX document class
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/base\size10.clo))
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/xcolor\xcolor.sty
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color.cf
+g)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\xetex.de
+f)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor.lt
+x))
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/graphics\dvipsnam.def
+) (C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/xcolor\svgnam.def)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/xcolor\x11nam.def)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.sty
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifvtex.sty
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty))
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg
+))
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsmath.sty
+For additional information on amsmath, use the `?' option.
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amstext.sty
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsgen.sty))
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsopn.sty))
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amssymb.sty
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amsfonts.sty
+))
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/unicode-math\unicode-
+math.sty
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/l3kernel\expl3.sty
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-x
+etex.def))
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/unicode-math\unicode-
+math-xetex.sty
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/l3packages/xparse\xpa
+rse.sty)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/l3packages/l3keys2e\l
+3keys2e.sty)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/fontspec\fontspec.sty
+
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/fontspec\fontspec-xet
+ex.sty
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/fontspec\fontspec.cfg
+))) (C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/base\fix-cm.sty
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/base\ts1enc.def))
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/unicode-math\unicode-
+math-table.tex)))
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/lm\lmodern.sty)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/upquote\upquote.sty
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/base\textcomp.sty))
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/microtype\microtype.s
+ty
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/etoolbox\etoolbox.sty
+)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/microtype\microtype-x
+etex.def)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/microtype\microtype.c
+fg))
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/parskip\parskip.sty
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvoptions.s
+ty
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/generic/ltxcmds\ltxcmds.sty
+)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/kvsetkeys\kvsetkeys.s
+ty)))
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/tools\longtable.sty)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/booktabs\booktabs.sty
+) (C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/tools\array.sty)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/tools\calc.sty)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/footnotehyper\footnot
+ehyper.sty)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
+
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics
+.cfg)))
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/pdflscape\pdflscape.s
+ty
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/pdflscape\pdflscape-n
+ometadata.sty
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/graphics\lscape.sty))
+)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/makecell\makecell.sty
+) (C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/float\float.sty)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/bookmark\bookmark.sty
+
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hyperref.sty
+
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/generic/kvdefinekeys\kvdefi
+nekeys.sty)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/generic/pdfescape\pdfescape
+.sty
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/generic/pdftexcmds\pdftexcm
+ds.sty
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/generic/infwarerr\infwarerr
+.sty)))
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/hycolor\hycolor.sty)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\nameref.sty
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/refcount\refcount.sty
+)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/generic/gettitlestring\gett
+itlestring.sty))
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/generic/stringenc\stringenc
+.sty)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\pd1enc.def)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/generic/intcalc\intcalc.sty
+) (C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\puenc.def)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/url\url.sty)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/generic/bitset\bitset.sty
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/generic/bigintcalc\bigintca
+lc.sty)))
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hxetex.def
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/rerunfilecheck\rerunf
+ilecheck.sty
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/generic/uniquecounter\uniqu
+ecounter.sty)))
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/bookmark\bkm-xetex.de
+f)) (C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/xurl\xurl.sty)
+(Assignment2_Report.aux)
+*geometry* driver: auto-detecting
+*geometry* detected driver: xetex
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/lm\omllmm.fd)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-msa.cfg)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd)
+(C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-msb.cfg)
+[1] [2] [3] [4] [5] [6] [7] [8] [9] [10] [11]
+Underfull \hbox (badness 1348) in paragraph at lines 733--740
+\TU/lmtt/m/n/10 gifs/figure3_m2.gif\TU/TimesNewRoman(0)/m/n/10 , \TU/lmtt/m/n/1
+0 gifs/figure3_r1.gif\TU/TimesNewRoman(0)/m/n/10 , \TU/lmtt/m/n/10 gifs/figure3
+_r2.gif\TU/TimesNewRoman(0)/m/n/10 ; each keeps the same four rows and
+[12] [13] [14] [15] [16] [17] [18] [19] [20] [21] [22] [23]
+(Assignment2_Report.aux)miktex-dvipdfmx: major issue: So far, you have not checked for MiKTeX updates.
+ )
+(see the transcript file for additional information)
+Output written on Assignment2_Report.pdf (23 pages).
+Transcript written on Assignment2_Report.log.
+xelatex: major issue: So far, you have not checked for MiKTeX updates.

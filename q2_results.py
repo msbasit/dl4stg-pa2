@@ -14,7 +14,7 @@ from q2_experiments import (ROOT, DEVICE, M, R, window, video_tensor, load_model
 def fmt(x, scientific=False):
     x=float(x)
     if scientific or (0<abs(x)<1e-3): return f'{x:.2e}'
-    return f'{x:.3g}'
+    return f'{x:#.3g}'
 
 def stats(v):
     return dict(MSE1=v['mse1'][:,0].mean(),MSE2=v['mse1'][:,1].mean(),
@@ -78,16 +78,19 @@ def frame_grid(rows,labels,path,title,columns=None):
             ax[r,c].imshow(np.asarray(frame).squeeze(),cmap='gray',vmin=0,vmax=1)
             ax[r,c].set_xticks([]);ax[r,c].set_yticks([])
             for spine in ax[r,c].spines.values(): spine.set_visible(False)
-            if c==0: ax[r,c].set_ylabel(labels[r],fontsize=9)
-            if r==0: ax[r,c].set_title(columns[c] if columns else str(c+1),fontsize=9)
-    fig.suptitle(title,fontsize=11);fig.subplots_adjust(left=.1,right=.995,bottom=.01,top=.88,wspace=.03,hspace=.06)
+            if c==0:
+                label=labels[r].replace(' / ',' /\n').replace(' prediction','\nprediction').replace(' truth','\ntruth')
+                ax[r,c].set_ylabel(label,fontsize=12)
+            if r==0: ax[r,c].set_title(columns[c] if columns else str(c+1),fontsize=12)
+    fig.suptitle(title,fontsize=14);fig.subplots_adjust(left=.1,right=.995,bottom=.01,top=.88,wspace=.03,hspace=.06)
     fig.savefig(path,dpi=150);plt.close(fig)
 
 def gif_panel(future_rows,labels,path,inputs):
     imgs=[]; scale=2; left=135; w=left+6*64*scale; h=24+4*64*scale
     for t in range(5):
         canvas=Image.new('RGB',(w,h),'white');draw=ImageDraw.Draw(canvas)
-        draw.text((left,5),f'Inputs 1-5 (fixed)                         Forecast horizon {t+1}',fill='black')
+        draw.text((left,5),'Inputs 1-5 (fixed)',fill='black')
+        draw.text((left+5*128,5),f'Forecast h={t+1}',fill='black')
         for r,row in enumerate(future_rows):
             for c,frame in enumerate([*inputs[r],row[t]]):
                 a=np.clip(np.asarray(frame).squeeze()*255,0,255).astype('uint8')
@@ -124,16 +127,19 @@ def baseline_figures(ds):
     selected.update(figure2=ids,overlap=overlap,speed=clear)
     (ROOT/'results'/'selected_videos.json').write_text(json.dumps(selected,indent=2))
     symmetry_panels(ds,model,selected,'figure3')
+    gap_histogram(v,selected)
+    speed_panel(ds,model,clear,'figure5')
+    tables(False)
+    return selected
+
+def gap_histogram(v,selected):
     fig,ax=plt.subplots(1,2,figsize=(10,3.4),layout='constrained')
     for a,tag in zip(ax,('m','r')):
         values=v['c'+tag];a.hist(values,bins=35,color='#357b96')
         for j,idx in enumerate(selected[tag]):
-            value=values[idx-9000];a.axvline(value,c=('red','orange')[j],ls='--',label=f'video {idx}: {value:.3g}')
+            value=values[idx-9000];a.axvline(value,c=('red','orange')[j],ls='--',label=f'video {idx}: {fmt(value)}')
         a.set(xlabel=f'C_{tag.upper()} (per-video MSE)',ylabel='Test videos',title=('Mirror' if tag=='m' else 'Rotation'));a.legend(fontsize=8)
     fig.suptitle('Figure 4. Model A seed-0 consistency gaps over 1,000 test videos');fig.savefig(ROOT/'figures'/'figure4.png',dpi=170);plt.close(fig)
-    speed_panel(ds,model,clear,'figure5')
-    tables(False)
-    return selected
 
 def symmetry_panels(ds,model,selected,prefix):
     panels=[]
@@ -163,6 +169,7 @@ def speed_panel(ds,model,idx,prefix):
                [f'Input {i}' for i in range(1,6)]+['h=1','h=2'])
 
 def final_figures(ds):
+    baseline_figures(ds)
     selected=json.loads((ROOT/'results'/'selected_videos.json').read_text())
     model=load_model('D',0,True)
     symmetry_panels(ds,model,selected,'figure6a')
