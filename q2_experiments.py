@@ -1,6 +1,6 @@
 """Q2: exact assignment protocol; Intel XPU required for learned models."""
 from pathlib import Path
-import json, time, random, argparse
+import json, time, random, argparse, os, shutil, subprocess
 import numpy as np
 import torch
 from torch import nn
@@ -51,20 +51,21 @@ class Cell(nn.Module):
 class Forecaster(nn.Module):
     def __init__(self, larger_reach=False):
         super().__init__()
-        d = 2 if larger_reach else 1
-        self.cell1, self.cell2 = Cell(16, d), Cell(64, d)
+        self.cell1 = Cell(16, 1)
+        self.cell2 = Cell(64, 3 if larger_reach else 1)
         self.head = nn.Conv2d(64, 16, 1, bias=True)
+    @torch.autocast(device_type='xpu', dtype=torch.bfloat16)
     def forward(self, x):
-        z = x.new_zeros((x.shape[0], 64, 16, 16))
+        z = torch.zeros((x.shape[0], 64, 16, 16),device=x.device,dtype=torch.bfloat16).contiguous(memory_format=torch.channels_last)
         h1, c1, h2, c2 = z, z, z, z
         pred, outputs = None, []
         for step in range(9):
             u = x[:, step] if step < 5 else pred
-            h1, c1 = self.cell1(F.pixel_unshuffle(u, 4), h1, c1)
+            h1, c1 = self.cell1(F.pixel_unshuffle(u, 4).contiguous(memory_format=torch.channels_last), h1, c1)
             h2, c2 = self.cell2(h1, h2, c2)
             pred = torch.sigmoid(F.pixel_shuffle(self.head(h2), 4))
             if step >= 4: outputs.append(pred)
-        return torch.stack(outputs, 1)
+        return torch.stack(outputs, 1).float()
 
 class Symmetrised(nn.Module):
     def __init__(self, model): super().__init__(); self.model = model
@@ -80,12 +81,24 @@ def seed_all(seed):
     random.seed(seed); np.random.seed(seed); torch.manual_seed(seed)
     torch.xpu.manual_seed_all(seed)
 
+def compiler_environment():
+    """Use the already installed MSVC toolchain for Triton on Windows."""
+    if os.name!='nt' or shutil.which('cl'): return
+    vswhere=Path(os.environ.get('ProgramFiles(x86)','C:/Program Files (x86)'))/'Microsoft Visual Studio/Installer/vswhere.exe'
+    installation=subprocess.check_output([str(vswhere),'-latest','-products','*','-requires',
+        'Microsoft.VisualStudio.Component.VC.Tools.x86.x64','-property','installationPath'],text=True).strip()
+    script=Path(installation)/'Common7/Tools/VsDevCmd.bat'
+    output=subprocess.check_output(f'call "{script}" -arch=x64 >nul && set',shell=True,text=True)
+    for line in output.splitlines():
+        if '=' in line and not line.startswith('='):
+            key,value=line.split('=',1);os.environ[key]=value
+
 def train(ds, name, seed):
     assert torch.xpu.is_available(), 'Intel XPU unavailable: CPU fallback is disabled.'
     final = ROOT/'checkpoints'/f'{name}_seed{seed}.pt'
     if final.exists(): return
     seed_all(seed)
-    model = Forecaster(name == 'D').to(DEVICE)
+    model = Forecaster(name == 'D').to(device=DEVICE,memory_format=torch.channels_last)
     assert sum(p.numel() for p in model.parameters()) == 480784
     opt = torch.optim.Adam(model.parameters(), lr=1e-3)
     resume = ROOT/'checkpoints'/f'{name}_seed{seed}_resume.pt'
@@ -100,6 +113,8 @@ def train(ds, name, seed):
         torch.set_rng_state(state['rng']); random.setstate(state['python_rng'])
         torch.xpu.set_rng_state_all(state['xpu_rng'])
     print(f'TRAIN {name} seed={seed} start={start} device={torch.xpu.get_device_name(0)}', flush=True)
+    compiler_environment()
+    run_model = torch.compile(model)
     # Loading uint8 videos does not change the prescribed per-epoch window sampling.
     raw = ds.data
     for epoch in range(start,30):
@@ -119,7 +134,7 @@ def train(ds, name, seed):
                 batch.append((x,y,mask))
             x,y,mask=[torch.stack(v).to(DEVICE) for v in zip(*batch)]
             opt.zero_grad(set_to_none=True)
-            pred=model(x); loss=masked_mse(pred,y,mask)
+            pred=run_model(x); loss=masked_mse(pred,y,mask)
             loss.backward(); opt.step(); total += loss.detach()
             if offset == 0 and epoch == start:
                 torch.xpu.synchronize()
@@ -130,17 +145,19 @@ def train(ds, name, seed):
                'losses':losses,'times':times,'rng':torch.get_rng_state(),
                'python_rng':random.getstate(),'xpu_rng':torch.xpu.get_rng_state_all(),
                'model_name':name,'seed':seed,'hardware':torch.xpu.get_device_name(0),
-               'torch':torch.__version__,'precision':'float32'}
+               'torch':torch.__version__,'precision':'float32 inputs/weights/loss; XPU bfloat16 autocast; channels-last convolutions'}
         torch.save(state,resume)
         (ROOT/'results'/f'training_{name}_{seed}.json').write_text(json.dumps(
             {key:state[key] for key in ('epoch','losses','times','hardware','torch','precision')},indent=2))
         print(f'{name}/{seed} epoch {epoch+1}/30 MSE={losses[-1]:.7f} time={seconds:.2f}s',flush=True)
-    torch.save({key:state[key] for key in ('model','epoch','losses','times','model_name','seed','hardware','torch','precision')},final)
+    temporary=final.with_suffix('.tmp')
+    torch.save({key:state[key] for key in ('model','epoch','losses','times','model_name','seed','hardware','torch','precision')},temporary)
+    os.replace(temporary,final)
 
 def load_model(name,seed,wrap=False):
     state=torch.load(ROOT/'checkpoints'/f'{name}_seed{seed}.pt',map_location='cpu',weights_only=False)
     assert state['epoch']==30
-    model=Forecaster(name=='D').to(DEVICE); model.load_state_dict(state['model']); model.eval()
+    model=Forecaster(name=='D').to(device=DEVICE,memory_format=torch.channels_last); model.load_state_dict(state['model']); model.eval()
     return Symmetrised(model).eval() if wrap else model
 
 @torch.no_grad()
