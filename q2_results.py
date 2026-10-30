@@ -13,7 +13,7 @@ from q2_experiments import (ROOT, DEVICE, M, R, window, video_tensor, load_model
 
 def fmt(x, scientific=False):
     x=float(x)
-    if scientific or (0<abs(x)<1e-3): return f'{x:.2e}'
+    if scientific or (abs(x)<1e-3): return f'{x:.2e}'
     return f'{x:#.3g}'
 
 def stats(v):

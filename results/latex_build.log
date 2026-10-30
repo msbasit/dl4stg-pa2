@@ -133,8 +133,10 @@ f)) (C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/xurl\xurl.sty)
 (C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-msa.cfg)
 (C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd)
 (C:\Users\msbasit\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-msb.cfg)
-[1] [2] [3] [4] [5] [6] [7] [8] [9] [10] [11]
-Underfull \hbox (badness 1348) in paragraph at lines 733--740
+[1] [2]
+ignored error: Infinite glue shrinkage found in box being split [3] [4]
+[5] [6] [7] [8] [9] [10] [11]
+Underfull \hbox (badness 1348) in paragraph at lines 745--752
 \TU/lmtt/m/n/10 gifs/figure3_m2.gif\TU/TimesNewRoman(0)/m/n/10 , \TU/lmtt/m/n/1
 0 gifs/figure3_r1.gif\TU/TimesNewRoman(0)/m/n/10 , \TU/lmtt/m/n/10 gifs/figure3
 _r2.gif\TU/TimesNewRoman(0)/m/n/10 ; each keeps the same four rows and

@@ -25,6 +25,8 @@ header-includes:
 
 ![Architecture and tensor dimensions](figures/q1_architecture.png)
 
+**Reading the dimensions.** $B$ is the number of forecast-issuance examples; $H=144$ historical ten-minute grid points; $N=6$ source nodes (five level stations plus the reservoir); $d=32$ learned features; and $K=6$ future planned-release intervals. The numbers 5, 2 and 1 in the raw inputs count level stations, rain gauges and a scalar value, respectively. The plan's last axis has three features: amount, mask and announcement age. Reshaping gives $HN=144\times6=864$ historical tokens. Four output stations each receive one forecast at the same one-hour target time. Detailed axes and auxiliary inputs are specified in Section 3.
+
 The forecast is a learned, directed space–time attention model. The diagram is part of the answer; the following sections specify its inputs and computations. All historical tensors use the same ten-minute grid. Missingness and observation age travel with each value. The reservoir is a source node, not an additional water-level target.
 
 ## 2. Assumptions
@@ -104,7 +106,7 @@ The reservoir has paths to S1–S4; S1 can inform S2–S4; T1 has paths to S2–
 
 **(iv) Scheduled versus actual release.** Use actual releases only after measurement arrival. Retain archived plans to learn their historical error distribution and include a historical actual-minus-previously-announced discrepancy feature in the reservoir embedding. Run plausible release-deviation scenarios using those residuals and widen intervals during execution failures. Do not substitute realised future release into training plan features. A schedule that proves wrong cannot be known to be wrong at issuance.
 
-Preprocessing creates only 864 historical tokens and six plan tokens. Two width-32 attention blocks have an order of $2\times864^2\times32$ pairwise mixing operations each, plus projections; sparse ancestor/time masks can reduce this. Four output queries are cheap. Loading a compact fitted model once, incrementally updating the history and batching four station forecasts is plausibly compatible with ten-minute issuance, but this is a feasibility argument, not a measured latency claim. Timestamp checks, monitoring and a fast persistence fallback are part of the service. No Q1 training or benchmark is needed.
+Preprocessing creates only 864 historical tokens and six plan tokens. Across two width-32 attention blocks, attention-score formation and value aggregation require on the order of $4\times864^2\times32$ multiply-accumulate operations, plus projections and feed-forward maps; sparse ancestor/time masks can reduce this. Four output queries are cheap. Loading a compact fitted model once, incrementally updating the history and batching four station forecasts is plausibly compatible with ten-minute issuance, but this is a feasibility argument, not a measured latency claim. Timestamp checks, monitoring and a fast persistence fallback are part of the service. No Q1 training or benchmark is needed.
 
 ## 6. Uncertainty, limitations, and additional information
 
@@ -218,8 +220,8 @@ Both average pixels, five horizons and all 1,000 test videos at 1x.
 | Model | E5 | CM | EM | CR | ER |
 |---|---:|---:|---:|---:|---:|
 | A | 0.0221 (0.0232, 0.0210) | 0.00174 (0.00149, 0.00199) | 0.0227 (0.0236, 0.0218) | 0.00303 (0.00278, 0.00328) | 0.0238 (0.0247, 0.0230) |
-| Blank | 0.0426 | 0.00 | 0.0426 | 0.00 | 0.0426 |
-| Copy-last | 0.0641 | 0.00 | 0.0641 | 0.00 | 0.0641 |
+| Blank | 0.0426 | 0.00e+00 | 0.0426 | 0.00e+00 | 0.0426 |
+| Copy-last | 0.0641 | 0.00e+00 | 0.0641 | 0.00e+00 | 0.0641 |
 
 Learned entries: mean (seed 0, seed 1). Errors are pixel MSE on 1,000 test videos. Timing columns are seconds; inference excludes host-to-device transfer and includes XPU synchronization.
 
@@ -356,6 +358,6 @@ Exact symmetry is established; robust motion learning is not. At 3x the final mo
 
 **Output:** Codex generated the Q1 proposal and architecture diagram; Q2 data, transformations, ConvLSTM implementations, training/evaluation and visualization code; the notebooks; result interpretation; and the combined report. Reported measurements are computed from the supplied protocol and saved local runs, not fabricated examples. Q1 is a proposed design without a claimed training experiment. Learned Q2 models run on the Intel Arc 140T GPU through PyTorch XPU; preprocessing and the mandated Farneback analysis run on CPU.
 
-**Edits and decisions:** The human instructed “Keep everything local” in response to a question about the required public GitHub repository; no repository was published. Codex revised model D from a preliminary dilation-2/dilation-2 idea to dilation-1/dilation-3 before D training to cover intermediate offsets. An initial partial float32 A run was excluded and replaced by a fresh, consistently configured mixed-precision run. No human-authored corrections to the generated technical answers have been supplied in this chat. The pre-experiment Q2.5 and Q2.11 answers are preserved in their committed files.
+**Edits and decisions:** The human instructed “Keep everything local” in response to a question about the required public GitHub repository; no repository was published. Codex revised model D from a preliminary dilation-2/dilation-2 idea to dilation-1/dilation-3 before D training to cover intermediate offsets. An initial partial float32 A run was excluded and replaced by a fresh, consistently configured mixed-precision run. The human requested a submission-readiness review and identified the architecture diagram as cramped with unclear numbers. Codex redrew the diagram, added an axis key, clarified the dimension explanations, and corrected zero-error formatting and the attention-cost estimate. The pre-experiment Q2.5 and Q2.11 answers are preserved in their committed files.
 
 This disclosure records the assistance actually used; it does not claim independent human authorship. The student should review the equations, code and interpretations and make any required course-policy declaration before submission.
