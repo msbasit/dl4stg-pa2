@@ -58,4 +58,5 @@ for _ in range(2):
                      stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,encoding='utf-8',errors='replace')
     (root/'results'/'latex_build.log').write_text(r.stdout,encoding='utf-8')
     if r.returncode:raise RuntimeError(r.stdout[-6000:])
-print(root/'Assignment2_Report.pdf')
+(root/'Assignment2_Report.pdf').replace(root/'25280025_PA2.pdf')
+print(root/'25280025_PA2.pdf')

@@ -2,54 +2,67 @@ from pathlib import Path
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
+from matplotlib.patches import FancyBboxPatch,FancyArrowPatch
 root=Path(__file__).resolve().parent
-fig,ax=plt.subplots(figsize=(8.2,9.5)); ax.set(xlim=(0,8.2),ylim=(0,9.5)); ax.axis('off')
-ink='#173f53'; blue='#edf4f8'; green='#e5f2eb'; gold='#fff3da'
-def box(x,y,w,h,title,body,color=blue,fs=10.5):
-    ax.add_patch(FancyBboxPatch((x,y),w,h,boxstyle='round,pad=.035',facecolor=color,edgecolor=ink,linewidth=1.15))
-    ax.text(x+.13,y+h-.16,title,ha='left',va='top',fontsize=11.4,fontweight='bold',color=ink)
-    for index,line in enumerate(body.split('\n')):
-        ax.text(x+.13,y+h-.42-index*.20,line,ha='left',va='top',fontsize=fs,color='#172c36')
-def arrow(a,b,dashed=False):
-    ax.add_patch(FancyArrowPatch(a,b,arrowstyle='-|>',mutation_scale=12,color=ink,linewidth=1.2,linestyle='--' if dashed else '-'))
-ax.text(.1,9.30,'Q1 | One-hour river-level forecast',fontsize=16,fontweight='bold',color=ink,va='top')
-ax.text(.1,8.97,'Issued every 10 minutes using information received by issuance time.',fontsize=10.5,color=ink,va='top')
-box(.1,7.65,2.5,1.05,'Water levels','S1, S2, S3, S4 and T1\nValues: B × H × 5 × 1')
-box(2.85,7.65,2.5,1.05,'Actual releases','Q + past plan error\nValues: B × H × 1 × 1')
-box(5.6,7.65,2.5,1.05,'Rainfall','Gauges R1 and R2\nValues: B × H × 2 × 1')
-for x in (1.35,4.1,6.85): arrow((x,7.65),(x,7.31))
-box(.1,5.78,8,1.49,'Align, project and combine sources',
-    'Align to the same 10-minute grid; scale using training data only.\n'
-    'Carry each value with its availability mask and observation age.\n'
-    'Project levels / releases to d features; stack N source nodes.\n'
-    'Project rain; weight gauges for each node; add rain and time / node embeddings.\n'
-    'Combined history: B × H × N × d',fs=10.3)
-arrow((2.7,5.78),(2.7,5.39))
-box(.1,3.53,5.22,1.82,'Encode the historical river state',
-    'Reshape time × node into HN = 864 tokens.\n'
-    'Two directed, causal attention blocks.\n'
-    'Each token uses its own / upstream nodes\n'
-    'at the same or earlier historical times.\n'
-    'Learn distance- and state-dependent lag weights.\n'
-    'Encoded history: B × 864 × d',fs=10.5)
-box(5.75,3.53,2.35,1.82,'Physical context',
-    'River connectivity\nand river distances\nNode / gauge locations\nand source types\n'
-    'Guides attention and\nrain-gauge weighting.',fs=10)
-arrow((5.75,4.4),(5.34,4.4),True); arrow((6.9,5.35),(6.9,5.76),True)
-arrow((2.7,3.53),(2.7,3.32))
-box(.1,1.85,5.22,1.43,'Decode four station forecasts',
-    'One query each for S1, S2, S3 and S4.\n'
-    'Cross-attend to upstream history + known plan.\n'
-    'Contexts: B × 4 × d; predict a level increment.\n'
-    'Add last observed level; calibrate intervals.',green,fs=10.5)
-box(5.75,1.85,2.35,1.43,'Known future plan',
-    'K release intervals\nAmount / mask / age\nB × K × 1 × 3\nSqueeze + project:\nB × K × d',gold,fs=10)
-arrow((5.75,2.45),(5.34,2.45)); arrow((2.7,1.85),(2.7,1.52))
-box(.1,.73,8,.75,'Output: S1, S2, S3 and S4 at issuance + 60 minutes',
-    'Point levels, lower bounds and upper bounds: each B × 4',green,fs=11)
-ax.text(.1,.51,'AXIS KEY   B = issuance examples   H = 144 historical grid points   N = 6 source nodes',fontsize=10,color=ink,va='top')
-ax.text(.1,.26,'d = 32 learned features   K = 6 future 10-minute intervals   × separates tensor axes',fontsize=10,color=ink,va='top')
-fig.savefig(root/'figures'/'q1_architecture.png',dpi=240,bbox_inches='tight',pad_inches=.07)
-fig.savefig(root/'figures'/'q1_architecture.svg',bbox_inches='tight',pad_inches=.07)
+fig,ax=plt.subplots(figsize=(9,11.6));fig.subplots_adjust(0,0,1,1)
+ax.set(xlim=(0,9),ylim=(0,11.6));ax.axis('off')
+ink='#163a52';blue='#eaf3f7';green='#e4f1eb';gold='#fff3d7'
+def box(x,y,w,h,title,lines,color=blue,fs=11):
+    ax.add_patch(FancyBboxPatch((x,y),w,h,boxstyle='round,pad=.025',facecolor=color,edgecolor=ink,linewidth=1.3))
+    ax.text(x+.1,y+h-.13,title,fontsize=11.8,fontweight='bold',color=ink,va='top')
+    for k,line in enumerate(lines):ax.text(x+.1,y+h-.40-k*.205,line,fontsize=fs,color='#1d2b36',va='top')
+def arrow(a,b,static=False):
+    ax.add_patch(FancyArrowPatch(a,b,arrowstyle='-|>',mutation_scale=13,linewidth=1.35,color=ink,linestyle='--' if static else '-'))
+ax.text(.12,11.45,'Q1 | One-hour river-level forecast',fontsize=18,fontweight='bold',color=ink,va='top')
+ax.text(.12,11.10,'Issue every 10 minutes at t₀; use only information received by t₀.',fontsize=11.5,color=ink,va='top')
+xs=[.12,2.37,4.62,6.87]
+box(xs[0],9.55,2.02,1.20,'Water levels',['S1-S4 and T1','value / mask / age','B × H × 5 × 3'])
+box(xs[1],9.55,2.02,1.20,'Actual releases',['Reservoir release Q','value / mask / age','B × H × 1 × 3'])
+box(xs[2],9.55,2.02,1.20,'Past schedules',['Archived release plans','Amount, announcement','and effective times'])
+box(xs[3],9.55,2.02,1.20,'Rainfall',['R1 and R2','value / mask / age','B × H × 2 × 3'])
+for x in xs:arrow((x+1.01,9.55),(x+1.01,9.29))
+box(.12,8.18,8.77,1.07,'Align to the issuance grid and scale',[
+    'H = 144 grid points: t₀ − 23 h 50 min through t₀; exclude arrivals after t₀.',
+    'Rain: interval totals. Training-only scalers; retain observation masks and ages.',
+    'Release features: Q, mask, age, error e = Q − Qplan, error-availability mask (5).'])
+for x in (1.15,3.31,5.46):arrow((x,8.18),(x,7.94))
+box(.12,6.79,2.01,1.11,'Project levels',['Linear 3 → d','B × H × 5 × 3','→ B × H × 5 × d'])
+box(2.33,6.79,2.01,1.11,'Project releases',['Linear 5 → d','B × H × 1 × 5','→ B × H × 1 × d'])
+box(4.54,6.79,2.01,1.11,'Project rain',['Linear 3 → d','Weight usable gauges','→ B × H × 6 × d'])
+box(6.83,3.77,2.06,4.13,'Physical context',[
+    'Upstream mask: 6 × 6','River distances: 6 × 6','Gauge-node distances:','6 × 2; node / gauge','locations; source types.','','Guides rain weights,','node embeddings,','attention / decoder','masks and lag biases.','','Rain weights also use','availability / quality;','normalize over usable','gauges only.'],color='#f2f4f5',fs=10.8)
+arrow((6.83,7.25),(6.58,7.25),True)
+for x in (1.15,3.31,5.46):arrow((x,6.79),(x,6.54))
+box(.12,5.50,6.43,1.00,'Combine sources: X has shape B × H × N × d',[
+    'Stack 5 level nodes + reservoir: B × H × 6 × d.',
+    'Add weighted rain + time and node / source-type embeddings.'])
+arrow((6.83,6.0),(6.58,6.0),True);arrow((3.34,5.50),(3.34,5.25))
+box(.12,3.77,6.43,1.44,'Encode the historical river state',[
+    'Reshape (H, N) → HN = 144 × 6 = 864 tokens.',
+    'Two directed, causal attention blocks: each token attends',
+    'to its own / upstream nodes at the same or earlier times.',
+    'Distance, lag and state bias learn lag preferences.',
+    'Encoded history Z: B × 864 × d.'])
+arrow((6.83,4.45),(6.58,4.45),True);arrow((3.34,3.77),(3.34,3.49))
+box(.12,2.03,6.43,1.42,'Decode four point forecasts',[
+    'Queries for S1-S4: B × 4 × d.',
+    'Cross-attend to own / upstream history + known plan.',
+    'Keys / values: B × (864 + K) × d; context: B × 4 × d.',
+    'Point-increment head: B × 4; scale to level units and',
+    'add each station’s last available level (age in query).'])
+box(6.83,2.03,2.06,1.42,'Known future plan',[
+    'K = 6; received by t₀.',
+    'Amount / mask / age:',
+    'B × K × 1 × 3.',
+    'Squeeze + project:',
+    'B × K × d + time.'],gold,fs=10.2)
+arrow((7.75,3.77),(6.25,3.47),True);arrow((6.83,2.65),(6.58,2.65));arrow((3.34,2.03),(3.34,1.77))
+box(.12,.85,8.77,.88,'Output: levels at S1-S4, all at t₀ + 60 minutes',[
+    'Point forecasts: B × 4. Separate split-conformal calibration gives lower / upper bounds.',
+    'Use held-out calibration residuals; each bound is B × 4 (packed together: B × 4 × 3).'],green,fs=11)
+ax.text(.12,.58,'B = issuance examples   H = 144 historical grid points   N = 6 source nodes',fontsize=11,color=ink,va='top')
+ax.text(.12,.35,'d = 32 learned features   K = 6 future intervals   × separates tensor axes',fontsize=11,color=ink,va='top')
+ax.text(.12,.12,'Solid arrows: data flow     Dashed arrows: static context     Q1 is a proposed design.',fontsize=10.5,color=ink,va='top')
+fig.savefig(root/'figures'/'q1_architecture.png',dpi=240,bbox_inches='tight',pad_inches=.06)
+fig.savefig(root/'figures'/'q1_architecture.svg',bbox_inches='tight',pad_inches=.06)
 plt.close(fig)

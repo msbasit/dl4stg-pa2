@@ -2,7 +2,7 @@
 
 ## Assignment 2: River Forecasting; Motion or Memory?
 
-[PDF report](Assignment2_Report.pdf) · [Q1 notebook](Q1_River_Proposal.ipynb) · [Q2 notebook](Q2_Motion_or_Memory.ipynb)
+[PDF report](25280025_PA2.pdf) · [Q1 notebook](Q1_River_Proposal.ipynb) · [Q2 notebook](Q2_Motion_or_Memory.ipynb)
 
 **Name:** Muhammad Sami Ul Basit
 
@@ -19,7 +19,7 @@
 
 ![Architecture and tensor dimensions](figures/q1_architecture.png)
 
-**Reading the dimensions.** $B$ is the number of forecast-issuance examples; $H=144$ historical ten-minute grid points; $N=6$ source nodes (five level stations plus the reservoir); $d=32$ learned features; and $K=6$ future planned-release intervals. The numbers 5, 2 and 1 in the raw inputs count level stations, rain gauges and a scalar value, respectively. The plan's last axis has three features: amount, mask and announcement age. Reshaping gives $HN=144\times6=864$ historical tokens. Four output stations each receive one forecast at the same one-hour target time. Detailed axes and auxiliary inputs are specified in Section 3.
+**Reading the dimensions.** $B$ counts issuance examples, $H=144$ historical ten-minute grid points, $N=6$ source nodes (S1-S4, T1 and the reservoir), $d=32$ learned features, and $K=6$ future planned-release intervals. The diagram groups each historical reading with its mask and age: levels are $B\times H\times5\times3$ and rainfall is $B\times H\times2\times3$. For the reservoir, append actual-minus-announced release error and its own availability mask, giving five projected features: $B\times H\times1\times5$. Section 3 lists values and auxiliary tensors separately. After projection, stacking and rain fusion, reshape $B\times H\times N\times d$ into $B\times864\times d$. Four station queries produce four point-level increments; the residual mapping returns physical levels. Separate split-conformal calibration on held-out calibration cases produces the bounds. Point levels, lower bounds and upper bounds are each $B\times4$; stacking them for presentation gives $B\times4\times3$. This packing does not introduce quantile heads or extra forecast times.
 
 The forecast is a learned, directed space–time attention model. The diagram is part of the answer; the following sections specify its inputs and computations. All historical tensors use the same ten-minute grid. Missingness and observation age travel with each value. The reservoir is a source node, not an additional water-level target.
 
