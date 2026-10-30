@@ -13,7 +13,11 @@ header-includes:
   - \usepackage{float}
 ---
 
-**Code repository:** Local Git repository `assignment2/`. Kept local at the author's explicit request; no public GitHub URL is supplied. The handout's public-repository requirement remains unmet.
+**Name:** Muhammad Sami Ul Basit
+
+**Roll No:** 25280025
+
+**GitHub:** [github.com/msbasit/dl4stg-pa2](https://github.com/msbasit/dl4stg-pa2)
 
 **Execution:** All eight learned runs use final epoch 30, with seeds 0 and 1 on the Intel Arc 140T GPU. The separate Q2 notebook, checkpoints, required figures and GIFs accompany this report.
 
@@ -348,16 +352,3 @@ The final model does not get test video 9917's rotated future right. Figure 6(a)
 ### Q2.17 — final verdict (under 150 words)
 
 Exact symmetry is established; robust motion learning is not. At 3x the final model's $E^{(2)}$ is 0.0340, versus Blank 0.0426 and Copy-last 0.0703; at 1x its $E^{(5)}$ is 0.0302. Those gains show useful predictive information, but Figure 6's blurred, weakly moving foreground does not demonstrate correct object tracking. C's improvement over A supports learning from broader motion exposure; D's larger reach brings no measured accuracy gain over C. A skeptic needs both seeds, per-horizon errors and the same-video true-versus-predicted trajectories alongside consistency. The wrapper guarantees agreement between transformed routes, not correct physics. One unpassed test is transfer to unfamiliar shapes or more than two objects at held-out speeds. These experiments therefore support partial predictive learning, not a general motion simulator.
-
-
-\newpage
-
-# Generative-AI disclosure
-
-**Prompt:** “Complete this assignment end to end. Artifacts for Q1 are given in the folder which where assignment .pdf lies. Necessary python pytorch libraries are already available. As per assignment Q1 artifacts are not for training but for modelling. Q2 requires training and modelling. Use Latex style equations where required. Create a separate notebook for Q2. . For training and inference use Intel ARC 140T GPU/NPU available on this machine. Do not add unnecessary computations and sections to the notebook only add things required in the scope of questions.”
-
-**Output:** Codex generated the Q1 proposal and architecture diagram; Q2 data, transformations, ConvLSTM implementations, training/evaluation and visualization code; the notebooks; result interpretation; and the combined report. Reported measurements are computed from the supplied protocol and saved local runs, not fabricated examples. Q1 is a proposed design without a claimed training experiment. Learned Q2 models run on the Intel Arc 140T GPU through PyTorch XPU; preprocessing and the mandated Farneback analysis run on CPU.
-
-**Edits and decisions:** The human instructed “Keep everything local” in response to a question about the required public GitHub repository; no repository was published. Codex revised model D from a preliminary dilation-2/dilation-2 idea to dilation-1/dilation-3 before D training to cover intermediate offsets. An initial partial float32 A run was excluded and replaced by a fresh, consistently configured mixed-precision run. The human requested a submission-readiness review and identified the architecture diagram as cramped with unclear numbers. Codex redrew the diagram, added an axis key, clarified the dimension explanations, and corrected zero-error formatting and the attention-cost estimate. The pre-experiment Q2.5 and Q2.11 answers are preserved in their committed files.
-
-This disclosure records the assistance actually used; it does not claim independent human authorship. The student should review the equations, code and interpretations and make any required course-policy declaration before submission.

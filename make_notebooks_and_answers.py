@@ -271,11 +271,15 @@ header-includes:
   - \\usepackage{float}
 ---
 
-**Code repository:** Local Git repository `assignment2/`. Kept local at the author's explicit request; no public GitHub URL is supplied. The handout's public-repository requirement remains unmet.
+**Name:** Muhammad Sami Ul Basit
+
+**Roll No:** 25280025
+
+**GitHub:** [github.com/msbasit/dl4stg-pa2](https://github.com/msbasit/dl4stg-pa2)
 
 **Execution:** All eight learned runs use final epoch 30, with seeds 0 and 1 on the Intel Arc 140T GPU. The separate Q2 notebook, checkpoints, required figures and GIFs accompany this report.
 
 \\newpage
 
-'''+q1+'\n\n\\newpage\n\n'+q2+'\n\n\\newpage\n\n'+(root/'AI_disclosure.md').read_text(encoding='utf-8')
+'''+q1+'\n\n\\newpage\n\n'+q2
     (root/'Assignment2_Report.md').write_text(report,encoding='utf-8')

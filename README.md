@@ -4,7 +4,7 @@ Q1 is a design proposal; no Q1 training is performed. Q2 uses its own notebook a
 
 Run `Q2_Motion_or_Memory.ipynb` in order with an XPU-enabled PyTorch kernel. Results and final-epoch checkpoints are cached so reopening the notebook does not repeat training. Training resumes only from complete epoch checkpoints. Models A-C follow the exact baseline; D keeps layer 1 at dilation 1 and changes layer 2 to dilation 3, with unchanged parameter count. The combined offsets cover -4 through +4 folded cells without holes. No optional D+B experiment is included.
 
-Per the user's instruction, everything is kept local. A local Git repository records the required pre-experiment predictions; the report explicitly states that no public repository was published. The handout's public-repository submission requirement is therefore not fulfilled by this local delivery.
+Repository URL supplied for submission: https://github.com/msbasit/dl4stg-pa2. A local Git repository preserves the pre-experiment predictions and completed work. This update adds the supplied URL to the report; it does not publish files or verify repository visibility.
 
 Environment used: existing `C:/Users/msbasit/Documents/Codex/2026-10-20/complete-this-assignment-end-to-end/work/venv-xpu/Scripts/python.exe`, PyTorch 2.14.1+xpu, torchvision 0.29.1+xpu. The ordinary system Python contains CPU-only PyTorch and must not be used for training.
 
